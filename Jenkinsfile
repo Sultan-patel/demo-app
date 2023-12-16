@@ -1,13 +1,12 @@
 pipeline {
     agent any
-    
+
     tools {
         // Specify the correct Git tool installation name
         git 'Default'
     }
-    
+
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('Dockerhub')
         DOCKER_REPO = 'badshahdocker/test'
     }
 
@@ -24,10 +23,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build Docker image and push to Docker Hub
-                    docker.withRegistry('', DOCKER_HUB_CREDENTIALS) {
-                        def customImage = docker.build("${DOCKER_REPO}:${BUILD_NUMBER}")
-                        customImage.push()
+                    // Use withCredentials to securely access Docker Hub credentials
+                    withCredentials([string(credentialsId: 'Dockerhub', variable: 'DOCKER_HUB_CREDENTIALS_USR')]) {
+                        // Build Docker image and push to Docker Hub
+                        docker.withRegistry('', DOCKER_HUB_CREDENTIALS_USR) {
+                            def customImage = docker.build("${DOCKER_REPO}:${BUILD_NUMBER}")
+                            customImage.push()
+                        }
                     }
                 }
             }
