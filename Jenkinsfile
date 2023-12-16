@@ -1,24 +1,24 @@
 def registry = 'https://hub.docker.com/'
-def imageName = 'https://hub.docker.com/repositories/badshahdocker/image'
+def imageName = 'badshahdocker/image'  // Removed unnecessary 'https://hub.docker.com/repositories/'
+
 pipeline {
     agent any
 
     stages {
-        stages {
         stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM', userRemoteConfigs: [[url: 'https://github.com/Sultan-patel/demo-app.git']]])
             }
         }
 
-    }
-    stage(" Docker Build ") {
+        stage('Docker Build') {
             steps {
                 script {
-                echo '<--------------- Docker Build Started --------------->'
-                app = docker.build($imageName)
-                echo '<--------------- Docker Build Ends --------------->'
+                    echo '<--------------- Docker Build Started --------------->'
+                    app = docker.build(imageName)  // Used 'imageName' instead of '$imageName'
+                    echo '<--------------- Docker Build Ends --------------->'
                 }
-            }    }
+            }
+        }
     }
-}    
+}
