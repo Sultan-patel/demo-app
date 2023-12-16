@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         // Specify the correct Git tool installation name
-        git 'Git'    }
+        git 'Default'    }
     
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('Dockerhub')
