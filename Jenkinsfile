@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = "nodejs-app"
+        DOCKER_IMAGE_NAME = "badshahdocker/nodejs-app"
         DOCKER_IMAGE_TAG = "latest"
     }
 
