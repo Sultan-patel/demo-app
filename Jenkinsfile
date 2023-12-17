@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = "badshahdocker/nodejs-app"
+        DOCKER_IMAGE_NAME = "docker/nodejs-app"
         DOCKER_IMAGE_TAG = "latest"
     }
 
@@ -13,12 +13,17 @@ pipeline {
             }
         }
 
-        stage('Docker Image Build') {
+        stages {
+            stage('Build and Push Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+        
+                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}: ."
+                    sh "docker login -u myregis  -p Sultan@12"
+                    sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
                 }
             }
         }
+    }
     }
 }
