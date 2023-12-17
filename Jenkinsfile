@@ -1,7 +1,10 @@
-
-
 pipeline {
     agent any
+
+    environment {
+        DOCKER_IMAGE_NAME = "badshahdocker/nodejs-app"
+        DOCKER_IMAGE_TAG = "latest"
+    }
 
     stages {
         stage('Checkout') {
@@ -9,11 +12,13 @@ pipeline {
                 checkout([$class: 'GitSCM', userRemoteConfigs: [[url: 'https://github.com/Sultan-patel/demo-app.git']]])
             }
         }
-        stage("docker image build")
+
+        stage('Docker Image Build') {
             steps {
-                    sh ''' docker build -t test . '''
+                script {
+                    docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+                }
             }
+        }
     }
 }
-
-        
